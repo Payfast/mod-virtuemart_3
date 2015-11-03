@@ -261,6 +261,7 @@ class plgVMPaymentPayFast extends vmPSPlugin
         }
 
         $post_variables['signature'] = md5( $pfOutput );
+		$post_variables['user_agent'] = 'VirtueMart 3.x';
     
     	// Prepare data that should be stored in the database
     	$dbValues['order_number'] = $order['details']['BT']->order_number;
