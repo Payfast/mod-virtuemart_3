@@ -1,6 +1,6 @@
 # mod-virtuemart_3
 
-Copyright (c) 2010-2015 PayFast (Pty) Ltd
+Copyright (c) 2010-2016 PayFast (Pty) Ltd
 
 LICENSE:
 
