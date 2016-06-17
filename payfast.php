@@ -463,9 +463,12 @@ class plgVMPaymentPayFast extends vmPSPlugin
         if( !$pfError && !$pfDone )
         {
             pflog( 'Verify security signature' );
+
+			$passPhrase = $method->payfast_passphrase;
+			$pfPassPhrase = empty( $passPhrase ) ? null : $passPhrase;
         
             // If signature different, log for debugging
-            if( !pfValidSignature( $pfData, $pfParamString ) )
+            if( !pfValidSignature( $pfData, $pfParamString, $pfPassPhrase ) )
             {
                 $pfError = true;
                 $pfErrMsg = PF_ERR_INVALID_SIGNATURE;
