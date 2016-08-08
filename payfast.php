@@ -234,7 +234,7 @@ class plgVMPaymentPayFast extends vmPSPlugin
             'notify_url' => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&on=' . $order['details']['BT']->order_number .'&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id."&XDEBUG_SESSION_START=session_name"."&o_id={$order['details']['BT']->order_number}"),
 
             // Item details
-            'm_payment_id' => $order['details']['BT']->virtuemart_paymentmethod_id,
+            'm_payment_id' => $order['details']['BT']->order_number,
             'amount' => number_format( sprintf( "%01.2f", $totalInPaymentCurrency ), 2, '.', '' ),
             'item_name' => JText::_('VMPAYMENT_payfast_ORDER_NUMBER') . ': ' . $order['details']['BT']->order_number,
         	'item_description' => "",
