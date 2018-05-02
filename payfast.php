@@ -216,9 +216,9 @@ class plgVMPaymentPayFast extends vmPSPlugin
             // Merchant details
             'merchant_id' => $payfastDetails['merchant_id'],
             'merchant_key' => $payfastDetails['merchant_key'],
-            'return_url' => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginresponsereceived&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id."&o_id={$order['details']['BT']->order_number}"),
-            'cancel_url' => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginUserPaymentCancel&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id),
-            'notify_url' => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=pluginresponse&task=pluginnotification&tmpl=component&on=' . $order['details']['BT']->order_number .'&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id."&XDEBUG_SESSION_START=session_name"."&o_id={$order['details']['BT']->order_number}"),
+            'return_url' => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=vmplg&task=pluginresponsereceived&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id."&o_id={$order['details']['BT']->order_number}"),
+            'cancel_url' => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=vmplg&task=pluginUserPaymentCancel&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id),
+            'notify_url' => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=vmplg&task=pluginnotification&tmpl=component&on=' . $order['details']['BT']->order_number .'&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id."&XDEBUG_SESSION_START=session_name"."&o_id={$order['details']['BT']->order_number}"),
 
             // Item details
             'm_payment_id' => $order['details']['BT']->order_number,
@@ -350,8 +350,8 @@ class plgVMPaymentPayFast extends vmPSPlugin
     	    return false;
     	
         $db = JFactory::getDBO();
-    	$query = 'SELECT ' . $this->_tablename . '.`virtuemart_order_id` FROM ' . $this->_tablename .
-                " WHERE  `order_number`= '" . $db->quote( $order_number ) . "'";
+    	$query = 'SELECT ' . $this->_tablename . '.`virtuemart_order_id` FROM ' . $this->_tablename . '
+                  WHERE  `order_number`= ' . $db->quote( $order_number ) . '';
     
     	$db->setQuery($query);
     	$virtuemart_order_id = $db->loadResult();
