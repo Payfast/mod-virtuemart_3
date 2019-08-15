@@ -11,10 +11,10 @@
 
 //// Create user agent string
 // User agent constituents (for cURL)
-define( 'PF_SOFTWARE_NAME', 'Virtuemart' );
-define( 'PF_SOFTWARE_VER', "2.0.6" );
+define( 'PF_SOFTWARE_NAME', 'VirtueMart' );
+define( 'PF_SOFTWARE_VER', "3.4.2" );
 define( 'PF_MODULE_NAME', 'PayFast-Virtuemart' );
-define( 'PF_MODULE_VER', '1.3.1' );
+define( 'PF_MODULE_VER', '1.4.0' );
 
 // Features
 // - PHP

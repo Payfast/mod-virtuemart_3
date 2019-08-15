@@ -163,6 +163,9 @@ class plgVMPaymentPayFast extends vmPSPlugin
 
     function plgVmConfirmedOrder($cart, $order) 
     {
+        // Include PayFast Common File
+        require_once("payfast_common.inc");
+
         if (!($method = $this->getVmPluginMethod($order['details']['BT']->virtuemart_paymentmethod_id))) 
         {
     	    return null;
@@ -220,15 +223,19 @@ class plgVMPaymentPayFast extends vmPSPlugin
             'cancel_url' => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=vmplg&task=pluginUserPaymentCancel&on=' . $order['details']['BT']->order_number . '&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id),
             'notify_url' => JROUTE::_(JURI::root() . 'index.php?option=com_virtuemart&view=vmplg&task=pluginnotification&tmpl=component&on=' . $order['details']['BT']->order_number .'&pm=' . $order['details']['BT']->virtuemart_paymentmethod_id."&XDEBUG_SESSION_START=session_name"."&o_id={$order['details']['BT']->order_number}"),
 
+            // User details
+            'name_first' => $order['details']['BT']->first_name,
+            'name_last' => $order['details']['BT']->last_name,
+            'email_address' => $order['details']['BT']->email,
+
             // Item details
             'm_payment_id' => $order['details']['BT']->order_number,
             'amount' => number_format( sprintf( "%01.2f", $totalInPaymentCurrency ), 2, '.', '' ),
             'item_name' => JText::_('VMPAYMENT_payfast_ORDER_NUMBER') . ': ' . $order['details']['BT']->order_number,
-        	'item_description' => "",
 
-    //        'currency_code' => $currency_code_3,
-            'custom_int1' => "",
-            'custom_str1' => $order['details']['BT']->order_number,
+            //'currency_code' => $currency_code_3,
+            'custom_str1' => 'PF_'.PF_SOFTWARE_NAME.'_'.PF_SOFTWARE_VER.'_'.PF_MODULE_VER,
+            'custom_str2' => 'User ID: '.$order['details']['BT']->virtuemart_user_id,
 
             );
 
@@ -248,7 +255,6 @@ class plgVMPaymentPayFast extends vmPSPlugin
         }
 
         $post_variables['signature'] = md5( $pfOutput );
-		$post_variables['user_agent'] = 'VirtueMart 3.x';
     
     	// Prepare data that should be stored in the database
     	$dbValues['order_number'] = $order['details']['BT']->order_number;
@@ -411,10 +417,9 @@ class plgVMPaymentPayFast extends vmPSPlugin
                 $pfError = true;
                 $pfErrMsg = PF_ERR_BAD_ACCESS;
             }
-        }
-    
-    	$order_number = $payfast_data['custom_str1'];
-    	$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($payfast_data['custom_str1']);
+        }    
+    	$order_number = $payfast_data['m_payment_id'];
+    	$virtuemart_order_id = VirtueMartModelOrders::getOrderIdByOrderNumber($payfast_data['m_payment_id']);
     	$this->logInfo('plgVmOnPaymentNotification: virtuemart_order_id  found ' . $virtuemart_order_id, 'message');
     
     	if (!$virtuemart_order_id) 
@@ -507,7 +512,7 @@ class plgVMPaymentPayFast extends vmPSPlugin
         {
             pflog( 'Check status and update order' );
     
-            $sessionid = $pfData['custom_str1'];
+            $sessionid = $pfData['m_payment_id'];
             $transaction_id = $pfData['pf_payment_id'];
     
     		switch( $pfData['payment_status'] )
