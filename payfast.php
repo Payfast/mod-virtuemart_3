@@ -60,9 +60,17 @@ class plgVMPaymentPayFast extends vmPSPlugin
     {
     	if ($method->sandbox)
         {
+            $sandBoxMerchantId = empty($method->payfast_merchant_id)
+                ? SANDBOX_MERCHANT_ID
+                : $method->payfast_merchant_id;
+
+            $sandBoxMerchantKey = empty($method->payfast_merchant_key)
+                ? SANDBOX_MERCHANT_KEY
+                : $method->payfast_merchant_key;
+
             $payfastDetails = array(
-                'merchant_id' => SANDBOX_MERCHANT_ID,
-                'merchant_key' => SANDBOX_MERCHANT_KEY, 
+                'merchant_id' => $sandBoxMerchantId,
+                'merchant_key' => $sandBoxMerchantKey,
                 'url' => 'https://sandbox.payfast.co.za/eng/process'
             );
         }
@@ -245,7 +253,7 @@ class plgVMPaymentPayFast extends vmPSPlugin
             $pfOutput .= $key .'='. urlencode( trim( $val ) ) .'&';
 
         $passPhrase = $method->payfast_passphrase;
-        if( empty( $passPhrase ) || ($method->sandbox) )
+        if( empty( $passPhrase ) )
         {
             $pfOutput = substr( $pfOutput, 0, -1 );
         }
